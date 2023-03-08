@@ -38,4 +38,5 @@ class User(models.Base):
     password = Column(String, unique=True, nullable=False)
     name = Column(String(100))
     surname = Column(String(100))
-    favorite_genre = Column(String(100))
+    favorite_genre_id = Column(Integer, ForeignKey(f'{Genre.__tablename__}.id'))
+    favorite_genre = relationship("Genre")
