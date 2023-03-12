@@ -14,3 +14,6 @@ def shell():
         "Director": Director,
         "User": User,
     }
+
+
+app.run(debug=True)

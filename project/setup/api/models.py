@@ -1,3 +1,4 @@
+# api/models.py -- файл моделей для использования в API Flask приложения.
 from flask_restx import fields, Model
 
 from project.setup.api import api

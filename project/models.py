@@ -1,3 +1,5 @@
+# project/models.py -- файл используется для определения схемы базы данных, которая будет использоваться в приложении.
+
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
 
@@ -19,7 +21,6 @@ class Director(models.Base):
 class Movie(models.Base):
     __tablename__ = 'movies'
 
-    name = Column(String(100), unique=True, nullable=False)
     title = Column(String(255), nullable=False)
     description = Column(String, nullable=False)
     trailer = Column(String(255), nullable=False)
@@ -38,4 +39,5 @@ class User(models.Base):
     password = Column(String, unique=True, nullable=False)
     name = Column(String(100))
     surname = Column(String(100))
-    favorite_genre = Column(String(100))
+    favorite_genre_id = Column(Integer, ForeignKey(f'{Genre.__tablename__}.id'))
+    favorite_genre = relationship("Genre")
