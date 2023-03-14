@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from project.dao.movie import MoviesDAO
+from project.dao import MoviesDAO
 from project.exceptions import ItemNotFound
 from project.models import Movie
 
