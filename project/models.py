@@ -41,3 +41,5 @@ class User(models.Base):
     surname = Column(String(100))
     favorite_genre_id = Column(Integer, ForeignKey(f'{Genre.__tablename__}.id'))
     favorite_genre = relationship("Genre")
+    favorite_movie_id = Column(Integer, ForeignKey(f'{Movie.__tablename__}.id'))
+    favorite_movie = relationship("Movie")

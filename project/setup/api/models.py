@@ -30,6 +30,7 @@ user: Model = api.model('Пользователь', {
     'password': fields.String(required=True, example='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiSm9obiIsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNjc4MTg1NDc5fQ.ar2lIBXAPbm-vFv-Np8RfQP6I0domPbXMJdtSQyJBH0'),
     'name': fields.String(max_length=100, example='Альфред'),
     'surname': fields.String(max_length=100, example='Хичкок'),
-    'favorite_genre': fields.String(max_length=100, example='триллер')
+    'favorite_genre': fields.String(max_length=100, example='триллер'),
+    'favorite_movie': fields.String(max_length=100, example='Психо')
 })
 

@@ -1,6 +1,4 @@
-from importlib.resources import Resource
-
-from flask_restx import Namespace
+from flask_restx import Namespace, Resource
 from flask import request
 
 from project.container import auth_service, user_service
@@ -23,14 +21,15 @@ class AuthsView(Resource):
         if None in [login, password]:
             return 'user not created', 400
 
-        user_ = user_service.create(data)
-
-        return 'user created', 201, {'location': f'/user/{user_.id}'}
+        # return user_service.create(data)
+        return user_service.create(data)
+        # print(user)
+        # return 'user created', 201, {'location': f'/user/{user.id}'}
 
 
 @api.route('/login')
 class AuthsView(Resource):
-    @api.marshal_with(user, code=200, description='OK')
+
     def post(self):
         """
         We send email and password and, if the user is authenticated,
@@ -54,6 +53,10 @@ class AuthsView(Resource):
 
     @api.marshal_with(user, code=200, description='OK')
     def put(self):
+        """
+        We accept a couple of tokens and, if they are valid, we create a couple of new ones.
+        :return: returns new tokens.
+        """
         data = request.json
         token = data.get('refresh_token')
 
