@@ -16,15 +16,12 @@ class AuthsView(Resource):
         We pass the email address and password, create a user in the system.
         """
         data = request.json
-        login = data.get('email', None)
+        email = data.get('email', None)
         password = data.get('password', None)
-        if None in [login, password]:
+        if None in [email, password]:
             return 'user not created', 400
 
-        # return user_service.create(data)
         return user_service.create(data)
-        # print(user)
-        # return 'user created', 201, {'location': f'/user/{user.id}'}
 
 
 @api.route('/login')
@@ -41,17 +38,16 @@ class AuthsView(Resource):
         """
         data = request.json
 
-        login = data.get('email', None)
+        email = data.get('email', None)
         password = data.get('password', None)
 
-        if None is [login, password]:
+        if None is [email, password]:
             return '', 400
 
-        tokens = auth_service.generate_tokens(login, password)
+        tokens = auth_service.generate_tokens(email, password)
 
         return tokens, 201
 
-    @api.marshal_with(user, code=200, description='OK')
     def put(self):
         """
         We accept a couple of tokens and, if they are valid, we create a couple of new ones.

@@ -22,13 +22,17 @@ class UsersService:
     def get_all(self, page: Optional[int] = None) -> list[User]:
         return self.dao.get_all(page=page)
 
-    def get_by_login(self, login):
-        return self.dao.get_by_login(login)
+    def get_by_email(self, email):
+        return self.dao.get_by_email(email)
+
+    def get_email_from_token(self, token):
+        data = jwt.decode(jwt=token, key=BaseConfig.SECRET_KEY, algorithms=[BaseConfig.JWT_ALGORITHM])
+        user_email = data.get('email')
+        return user_email
 
     def get_from_token(self, token):
-        data = jwt.decode(jwt=token, key=BaseConfig.SECRET_KEY, algorithm=BaseConfig.JWT_ALGORITHM)
-        user_login = data.get('email')
-        user = self.get_by_login(login=user_login)
+        user_email = self.get_email_from_token(token)
+        user = self.get_by_email(email=user_email)
         return user
 
     def create(self, data):
@@ -36,6 +40,12 @@ class UsersService:
         print(data)
         return self.dao.create(data)
 
-    def update(self, data, email):
+    def update_user(self, token, user_data):
+        email = self.get_email_from_token(token)
+        self.dao.update_user(email, user_data)
+
+    def update_password(self, data, email):
+        print(data)
         data['password'] = generate_password_hash(data['password'])
         self.dao.update_user(email, data)
+

@@ -15,7 +15,7 @@ class BaseConfig:
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    TOKEN_EXPIRE_MINUTES = 15
+    TOKEN_EXPIRE_MINUTES = 60
     TOKEN_EXPIRE_DAYS = 130
 
     PWD_HASH_SALT = base64.b64decode("salt")

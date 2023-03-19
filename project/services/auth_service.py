@@ -27,21 +27,21 @@ class AuthService:
     def get_all(self, page: Optional[int] = None) -> list[User]:
         return self.user_service.get_all(page=page)
 
-    def get_by_login(self, login):
-        return self.user_service.get_by_login(login)
+    def get_by_email(self, email):
+        return self.user_service.get_by_email(email)
 
-    def generate_tokens(self, login, password, is_refresh=False):
-        user = self.user_service.get_by_login(login)
+    def generate_tokens(self, email, password, is_refresh=False):
+        user = self.user_service.get_by_email(email)
 
         if user is None:
-            raise abort(400)
+            raise abort(404, 'user not found')
 
         if not is_refresh:
             if not compare_password(user.password, password):
-                abort(400)
+                abort(400, 'wrong password')
 
         data = {
-            "login": user.email,
+            "email": user.email,
         }
 
         # TOKEN_EXPIRE_MINUTES
@@ -60,12 +60,10 @@ class AuthService:
         }
 
     def approve_refresh_token(self, refresh_token):
-        data = jwt.decode(jwt=refresh_token, key=BaseConfig.SECRET_KEY, algorithm=BaseConfig.JWT_ALGORITHM)
-        user_login = data.get('email')
+        data = jwt.decode(jwt=refresh_token, key=BaseConfig.SECRET_KEY, algorithms=[BaseConfig.JWT_ALGORITHM])
+        user_email = data.get("email")
 
-        login = self.user_service.get_by_login(login=user_login)
-
-        if login is None:
+        if user_email is None:
             raise Exception('')
 
-        return self.generate_tokens(user_login, login.password, is_refresh=True)
+        return self.generate_tokens(user_email, password=None, is_refresh=True)
